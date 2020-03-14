@@ -28,9 +28,9 @@ $(function() {
   const addParticipantsMessage = (data) => {
     var message = '';
     if (data.numUsers === 1) {
-      message += "there's 1 participant";
+      message += "c'è 1 giocatore";
     } else {
-      message += "there are " + data.numUsers + " participants";
+      message += "ci sono " + data.numUsers + " giocatori";
     }
     log(message);
   }
@@ -102,7 +102,7 @@ $(function() {
   // Adds the visual chat typing message
   const addChatTyping = (data) => {
     data.typing = true;
-    data.message = 'is typing';
+    data.message = 'sta scrivendo..';
     addChatMessage(data);
   }
 
@@ -243,13 +243,13 @@ $(function() {
 
   // Whenever the server emits 'user joined', log it in the chat body
   socket.on('user joined', (data) => {
-    log(data.username + ' joined');
+    log(data.username + ' si è seduto');
     addParticipantsMessage(data);
   });
 
   // Whenever the server emits 'user left', log it in the chat body
   socket.on('user left', (data) => {
-    log(data.username + ' left');
+    log(data.username + ' non ci fà più');
     addParticipantsMessage(data);
     removeChatTyping(data);
   });
@@ -280,3 +280,38 @@ $(function() {
   });
 
 });
+
+function Game() {
+  this.div = document.getElementById("GameDiv");
+  this.div.style.width = "768px";
+  this.div.style.height = "512px"
+  this.canvas = document.getElementById("GameCanvas");
+  this.canvas.setAttribute("width","768");
+  this.canvas.setAttribute("height","512");
+  this.canvas.defaultWidth = this.canvas.width;
+  this.canvas.defaultHeight = this.canvas.height;
+
+  // this.canvas.style.cursor = "none";
+  //context 2d
+  this.ctx = this.canvas.getContext("2d");
+  if(!this.ctx){
+    alert("Il tuo browser non supporta HTML5, aggiornalo!");
+  }
+  this.GameLoop = function() {
+    if(!this.paused) {
+      // aggiorna tutti gli oggetti
+      this.Update();
+    }
+    //disegna l'intera scena a schermo
+    this.Draw();
+    window.requestAnimFrame(function() {
+      // rilancia la funzione GameLoop ad ogni frame
+      game.GameLoop();
+    });
+}
+function StartGame(){
+  //crea un istanza di Game
+  game = new Game();
+}}
+
+

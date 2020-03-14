@@ -39,6 +39,19 @@ ul {
   padding: 0;
   width: 100%;
 }
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
 
 .page {
   height: 100%;
@@ -53,7 +66,7 @@ ul {
 }
 
 .login.page .form {
-  height: 100px;
+  height: 50px;
   margin-top: -100px;
   position: absolute;
 
@@ -90,6 +103,13 @@ ul {
 
 .chat.page {
   display: none;
+  height: 100%;
+  width: 30%;
+
+}
+
+.play {
+  margin-left: 420px;
 }
 
 /* Font */
@@ -132,6 +152,10 @@ ul {
   overflow: hidden;
   padding-right: 15px;
   text-align: right;
+}
+
+.codeInput {
+
 }
 
 /* Input */

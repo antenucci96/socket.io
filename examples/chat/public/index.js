@@ -1,38 +1,25 @@
 // Setup basic express server
 var express = require('express');
 var app = express();
+var path = require('path');
 var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-var redis = require('socket.io-redis');
+var io = require('../..')(server);
 var port = process.env.PORT || 3000;
-var serverName = process.env.NAME || 'Unknown';
 
-io.adapter(redis({ host: 'redis', port: 6379 }));
-
-server.listen(port, function () {
-  console.log('Server listening at port %d', port);
-  console.log('Hello, I\'m %s, how can I help?', serverName);
-});
+server.listen(port);
 
 // Routing
-app.use(express.static(__dirname + '/public'));
-
-// Health check
-app.head('/health', function (req, res) {
-  res.sendStatus(200);
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Chatroom
 
 var numUsers = 0;
 
-io.on('connection', function (socket) {
-  socket.emit('my-name-is', serverName);
-
+io.on('connection', (socket) => {
   var addedUser = false;
 
   // when the client emits 'new message', this listens and executes
-  socket.on('new message', function (data) {
+  socket.on('new message', (data) => {
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
@@ -41,7 +28,7 @@ io.on('connection', function (socket) {
   });
 
   // when the client emits 'add user', this listens and executes
-  socket.on('add user', function (username) {
+  socket.on('add user', (username) => {
     if (addedUser) return;
 
     // we store the username in the socket session for this client
@@ -59,21 +46,21 @@ io.on('connection', function (socket) {
   });
 
   // when the client emits 'typing', we broadcast it to others
-  socket.on('typing', function () {
+  socket.on('typing', () => {
     socket.broadcast.emit('typing', {
       username: socket.username
     });
   });
 
   // when the client emits 'stop typing', we broadcast it to others
-  socket.on('stop typing', function () {
+  socket.on('stop typing', () => {
     socket.broadcast.emit('stop typing', {
       username: socket.username
     });
   });
 
   // when the user disconnects.. perform this
-  socket.on('disconnect', function () {
+  socket.on('disconnect', () => {
     if (addedUser) {
       --numUsers;
 
