@@ -5,6 +5,7 @@ var path = require('path');
 var server = require('http').createServer(app);
 var io = require('../..')(server);
 var port = process.env.PORT || 3000;
+var users = [];
 
 server.listen(port, () => {
   console.log('Server listening at port %d', port);
@@ -37,11 +38,15 @@ io.on('connection', (socket) => {
     socket.username = username;
     ++numUsers;
     addedUser = true;
+    users.push(username);
+    console.log(users);
     socket.emit('login', {
-      numUsers: numUsers
+      numUsers: numUsers,
+      listUsers: users
     });
     // echo globally (all clients) that a person has connected
     socket.broadcast.emit('user joined', {
+      listUsers: users,
       username: socket.username,
       numUsers: numUsers
     });
@@ -61,10 +66,19 @@ io.on('connection', (socket) => {
     });
   });
 
+  // socket.on('users', () => {
+  //   socket.emit('users list', {
+  //     users: socket.users
+  //   })
+  // })
+
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
     if (addedUser) {
       --numUsers;
+      const i = users.indexOf(socket.username);
+      users.splice(i,1);
+      console.log(users);
 
       // echo globally that this client has left
       socket.broadcast.emit('user left', {
@@ -73,4 +87,6 @@ io.on('connection', (socket) => {
       });
     }
   });
+
+
 });
