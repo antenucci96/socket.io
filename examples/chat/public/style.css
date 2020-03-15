@@ -45,17 +45,54 @@ ul {
 }
 
 /* Clear floats after the columns */
-.row:after {
-  content: "";
+.row {
   display: flex;
-  clear: both;
+  flex-direction: row;
+}
+.row.full-height {
+ height: 100%;
 }
 
-
+.col1 {
+  width: 8.33333%;
+}
+.col2 {
+  width: 16.6666%;
+}
+.col3 {
+  width: 25%;
+}
+.col4 {
+  width: 33.3333%;
+}
+.col5 {
+  width: 41.6666%;
+}
+.col6 {
+  width: 50%;
+}
+.col7 {
+  width: 58.3333%;
+}
+.col8 {
+  width: 66.6666%;
+}
+.col9 {
+  width: 75%;
+}
+.col10 {
+  width: 75%;
+}
+.col11 {
+  width: 83.3333%;
+}
+.col12 {
+  width: 100%;
+}
 
 .page {
   height: 100%;
-  position: absolute;
+  /*position: absolute;*/
   width: 100%;
 }
 
@@ -104,8 +141,13 @@ ul {
 .chat.page {
   display: none;
   height: 100%;
-  width: 30%;
+  /*width: 30%;*/
 
+}
+
+.game.page {
+  display: none;
+  height: 100%;
 }
 
 .play {
@@ -132,8 +174,8 @@ ul {
 /* Messages */
 
 .chatArea {
-  height: 100%;
-  padding-bottom: 60px;
+  height: calc(100% - 60px);
+  /*padding-bottom: 60px;*/
 }
 
 .messages {
@@ -167,7 +209,7 @@ ul {
   left: 0;
   outline: none;
   padding-left: 10px;
-  position: absolute;
+  /*position: absolute;*/
   right: 0;
   width: 100%;
 }

@@ -15,6 +15,7 @@ $(function() {
 
   var $loginPage = $('.login.page'); // The login page
   var $chatPage = $('.chat.page'); // The chatroom page
+  var $gamePage = $('.game.page'); // The game page
 
 
   // Prompt for setting a username
@@ -46,6 +47,7 @@ $(function() {
     if (username) {
       $loginPage.fadeOut();
       $chatPage.show();
+      $gamePage.show();
       $loginPage.off('click');
       $currentInput = $inputMessage.focus();
 
