@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Socket.IO Chat Example</title>
-  <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
 <div class="login page">
@@ -20,20 +24,24 @@
        </div>
       <input class="inputMessage" placeholder="Scrivi"/>
     </div>
+      <div class= "chat page">
+          <div class="chatArea">
+              <ul class="messages"></ul>
+          </div>
+          <input class="inputMessage" placeholder="Scrivi"/>
+      </div>
   </div>
 
 
 </div>
-<div class="play" id="GameDiv">
-  <canvas id="GameCanvas">
-    ciao
-  </canvas>
-</div>
+
+
+
 
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/main.js"></script>
-<script src="/utils.js"></script>
+<!--<script src="/utils.js"></script>-->
 </body>
 </html>
 

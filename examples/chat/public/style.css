@@ -41,13 +41,13 @@ ul {
 }
 .column {
   float: left;
-  width: 50%;
+  width: 30%;
 }
 
 /* Clear floats after the columns */
 .row:after {
   content: "";
-  display: table;
+  display: flex;
   clear: both;
 }
 

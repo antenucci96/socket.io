@@ -16,6 +16,7 @@ $(function() {
   var $loginPage = $('.login.page'); // The login page
   var $chatPage = $('.chat.page'); // The chatroom page
 
+
   // Prompt for setting a username
   var username;
   var connected = false;
@@ -35,6 +36,8 @@ $(function() {
     log(message);
   }
 
+
+
   // Sets the client's username
   const setUsername = () => {
     username = cleanInput($usernameInput.val().trim());
@@ -50,6 +53,7 @@ $(function() {
       socket.emit('add user', username);
     }
   }
+
 
   // Sends a chat message
   const sendMessage = () => {
@@ -233,8 +237,22 @@ $(function() {
     log(message, {
       prepend: true
     });
+
+    socket.emit("get list users" , username);
+
+    console.log("emit");
     addParticipantsMessage(data);
   });
+
+    socket.on('users list', (data) => {
+        users = data.users;
+        console.log("client " + users);
+
+    });
+
+    function stampaGiocatori (_users, _username) {
+
+    }
 
   // Whenever the server emits 'new message', update the chat body
   socket.on('new message', (data) => {
@@ -280,38 +298,5 @@ $(function() {
   });
 
 });
-
-function Game() {
-  this.div = document.getElementById("GameDiv");
-  this.div.style.width = "768px";
-  this.div.style.height = "512px"
-  this.canvas = document.getElementById("GameCanvas");
-  this.canvas.setAttribute("width","768");
-  this.canvas.setAttribute("height","512");
-  this.canvas.defaultWidth = this.canvas.width;
-  this.canvas.defaultHeight = this.canvas.height;
-
-  // this.canvas.style.cursor = "none";
-  //context 2d
-  this.ctx = this.canvas.getContext("2d");
-  if(!this.ctx){
-    alert("Il tuo browser non supporta HTML5, aggiornalo!");
-  }
-  this.GameLoop = function() {
-    if(!this.paused) {
-      // aggiorna tutti gli oggetti
-      this.Update();
-    }
-    //disegna l'intera scena a schermo
-    this.Draw();
-    window.requestAnimFrame(function() {
-      // rilancia la funzione GameLoop ad ogni frame
-      game.GameLoop();
-    });
-}
-function StartGame(){
-  //crea un istanza di Game
-  game = new Game();
-}}
 
 

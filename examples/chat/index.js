@@ -66,11 +66,14 @@ io.on('connection', (socket) => {
     });
   });
 
-  // socket.on('users', () => {
-  //   socket.emit('users list', {
-  //     users: socket.users
-  //   })
-  // })
+  socket.on('get list users', (username) => {
+        console.log("get users list");
+          socket.emit('users list', {
+              users: users
+
+      })
+
+  })
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {

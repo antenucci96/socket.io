@@ -21,7 +21,8 @@
     "url": "git://github.com/socketio/socket.io"
   },
   "scripts": {
-    "test": "nyc mocha --reporter spec --slow 200 --bail --timeout 10000 test/socket.io.js"
+    "test": "nyc mocha --reporter spec --slow 200 --bail --timeout 10000 test/socket.io.js",
+    "dev": "nodemon examples/chat/index.js"
   },
   "dependencies": {
     "debug": "~4.1.0",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "expect.js": "0.3.1",
     "mocha": "^3.5.3",
+    "nodemon": "^2.0.2",
     "nyc": "^11.2.1",
     "superagent": "^3.8.2",
     "supertest": "^3.0.0"
