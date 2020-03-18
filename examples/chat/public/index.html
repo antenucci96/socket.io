@@ -35,7 +35,17 @@
                 }
             </style>
         </div>
-        <!--<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>-->
+
+        <button  onclick="startGame()">Start</button> &nbsp;&nbsp;
+
+        <form  style="display: inline-block" id="palo" >
+            <input type="radio" id="coppe" name="palo" value="coppe">Coppe<br>
+            <input type="radio" id="spade" name="palo" value="spade">Spade<br>
+            <input type="radio" id="denari" name="palo" value="denari">Denari<br>
+            <input type="radio" id="bastoni" name="palo" value="bastoni">Bastoni
+        </form> &nbsp;
+        <button onclick="sceltaPalo()">Dai carte</button>
+        <button onclick="update()">Aggiorna</button>
     </div>
 
 </div>

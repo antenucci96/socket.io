@@ -6,6 +6,7 @@ var server = require('http').createServer(app);
 var io = require('../..')(server);
 var port = process.env.PORT || 3000;
 var users = [];
+var playerCards = [];
 
 server.listen(port, () => {
   console.log('Server listening at port %d', port);
@@ -70,10 +71,9 @@ io.on('connection', (socket) => {
         console.log("get users list");
           socket.emit('users list', {
               users: users
+          });
 
-      })
-
-  })
+  });
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
@@ -89,6 +89,14 @@ io.on('connection', (socket) => {
         numUsers: numUsers
       });
     }
+  });
+
+  socket.on('start game', () => {
+    console.log("start game server");
+      socket.broadcast.emit('list_of_users', {
+        users: users
+      });
+      console.log(users + "list of users");
   });
 
 

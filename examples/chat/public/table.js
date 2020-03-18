@@ -34,3 +34,8 @@ CardsGroup.prototype.toObject = function()
     }
 }
 
+function background() {
+    mainBackground = new creatajs.Bitmap("examples/chat/res/tiles-2797094_1280.jpg");
+    
+}
+
