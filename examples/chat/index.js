@@ -7,6 +7,8 @@ var io = require('../..')(server);
 var port = process.env.PORT || 3000;
 var users = [];
 var playerCards = [];
+var palo;
+
 
 server.listen(port, () => {
   console.log('Server listening at port %d', port);
@@ -92,12 +94,20 @@ io.on('connection', (socket) => {
   });
 
   socket.on('start game', () => {
-    console.log("start game server");
-      socket.broadcast.emit('list_of_users', {
-        users: users
+    console.log('start game server');
+    console.log(socket.username);
+
+      socket.broadcast.emit('start', users);
+
       });
-      console.log(users + "list of users");
+
+  socket.on('scelta palo', (data) => {
+      palo = data;
+      console.log(data);
+      console.log("eintri in scelta palo nel server ?");
+      socket.broadcast.emit('palo' , {
+        palo: palo
+      });
+      console.log(palo);
   });
-
-
 });

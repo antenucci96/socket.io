@@ -1,7 +1,10 @@
+const admin = "pappa";
 var users = [];
 var username;
+var usersFromSockets = [];
 var socket = io();
 const numPlayers = 2;
+var il_palo;
 $(function () {
     var FADE_TIME = 150; // ms
     var TYPING_TIMER_LENGTH = 400; // ms
@@ -301,27 +304,38 @@ $(function () {
     socket.on('reconnect_error', () => {
         log('attempt to reconnect has failed');
     });
+
+    socket.on('palo', (data) => {
+        console.log(data.palo + " on ");
+        drawPalo(data.palo);
+    });
+
+    socket.on('start', (data) => {
+        usersFromSockets = data;
+        console.log(usersFromSockets);
+        console.log("start");
+        startFromSocket();
+    });
+
 });
 
 function startGame() {
-    const str2 = "pappa";
-    console.log(username);
-    if (str2.localeCompare(username) === 0) {
+    if (admin.localeCompare(username) === 0) {
         socket.emit('start game');
-        // socket.on('list_of_users', (data) => {
-        //     console.log("entri in list_of_users nel main.js ?");
-        //     users = data.users;
-        //     console.log(users + " in start game main.js");
-        //     console.log(users.length);
-        // });
-       if (users.length == numPlayers){
-           myGameArea.start();
-           drawPlayers(users);
-       } else window.alert("pochi utenti");
+        if (users.length == numPlayers){
+            myGameArea.start();
+            drawPlayers(users);
+        } else window.alert("pochi utenti");
         console.log(users);
     } else window.alert("not admin");
 
 
+}
+
+function startFromSocket() {
+    myGameArea.start();
+    console.log(usersFromSockets);
+    drawPlayers(usersFromSockets);
 }
 
 var myGameArea = {
@@ -360,7 +374,7 @@ function drawPlayers(users) {
         user = new component("30px", "Consolas", "black", 20 + (i * 200), 400, users[i]);
     }
     for (j = numPlayers / 2; j < numPlayers; j++) {
-        user = new component("30px", "Consolas", "black", 20 + (n * 200), 50, users[j]);
+        user = new component("30px", "Consolas", "black", 20 + (n * 200), 100, users[j]);
         n++;
     }
 }
@@ -373,6 +387,23 @@ function sceltaPalo() {
             palo_value = palo[i].value;
         }
     }
-    console.log(palo_value);
+    socket.emit('scelta palo', palo_value);
+    // console.log(palo_value);
+    drawPalo();
 }
 
+function drawPalo (palo) {
+    var paloElement = new component("30px","Consolas","red",400,35,palo);
+}
+
+
+
+
+// function update() {
+//
+//     socket.on('users list', (data) => {
+//         console.log("user list in start game main.js");
+//         users = data.users;
+//         console.log("client " + users);
+//     });
+// }
