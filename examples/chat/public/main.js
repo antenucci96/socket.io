@@ -4,6 +4,7 @@ var username;
 var usersFromSockets = [];
 var socket = io();
 const numPlayers = 2;
+var paloElement;
 var il_palo;
 $(function () {
     var FADE_TIME = 150; // ms
@@ -317,6 +318,10 @@ $(function () {
         startFromSocket();
     });
 
+    socket.on('palo eliminato' , () => {
+       deleteComponent(120, 50, 400,0);
+    });
+
 });
 
 function startGame() {
@@ -366,6 +371,11 @@ function component(width, height, color, x, y, username) {
     ctx.fillText(username, this.x, this.y);
 }
 
+function deleteComponent(width, height, x, y) {
+    ctx = myGameArea.context;
+    ctx.clearRect(x,y,width,height);
+}
+
 function drawPlayers(users) {
     var i, j;
     var n = 0;
@@ -389,21 +399,15 @@ function sceltaPalo() {
     }
     socket.emit('scelta palo', palo_value);
     // console.log(palo_value);
-    drawPalo();
+    drawPalo(palo_value);
 }
 
 function drawPalo (palo) {
-    var paloElement = new component("30px","Consolas","red",400,35,palo);
+    paloElement = new component("30px","Consolas","red",400,35,palo);
 }
 
-
-
-
-// function update() {
-//
-//     socket.on('users list', (data) => {
-//         console.log("user list in start game main.js");
-//         users = data.users;
-//         console.log("client " + users);
-//     });
-// }
+function prossimaMano () {
+    console.log("prossima mano");
+    deleteComponent(120, 50, 400,0);
+    socket.emit('delete palo');
+}

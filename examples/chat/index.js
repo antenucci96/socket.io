@@ -110,4 +110,8 @@ io.on('connection', (socket) => {
       });
       console.log(palo);
   });
+
+  socket.on('delete palo', () => {
+    socket.broadcast.emit('palo eliminato');
+  });
 });
