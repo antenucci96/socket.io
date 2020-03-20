@@ -1,5 +1,7 @@
 const admin = "pappa";
+const numeroCarte = 40;
 var users = [];
+var cardToShow = [];
 var username;
 var usersFromSockets = [];
 var socket = io();
@@ -322,6 +324,11 @@ $(function () {
        deleteComponent(120, 50, 400,0);
     });
 
+    socket.on('ho bussato', (data) => {
+        console.log(data + "ha bussato");
+        window.alert(data + " ha bussato");
+    });
+
 });
 
 function startGame() {
@@ -350,6 +357,11 @@ var myGameArea = {
         this.canvas.height = 460;
         this.canvas.style.left = "460px";
         this.context = this.canvas.getContext("2d");
+        // var background = new Image();
+        // background.src = "tiles-2797094_1280.jpg";
+        // background.onload = function(){
+        //     ctx.drawImage(background,0,0);
+        // };
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         // this.frameNo = 0;
         // this.interval = setInterval(updateGameArea, 20);
@@ -371,6 +383,18 @@ function component(width, height, color, x, y, username) {
     ctx.fillText(username, this.x, this.y);
 }
 
+function cardComponent() {
+    console.log("card componente");
+    var img = new Image();
+    img.src = "1s.jpg";
+    img.onload = function () {
+        for (var i = 0; i<5; i++)
+        ctx.drawImage(img,120 + (i*120),150,100,130);
+    }
+
+
+}
+
 function deleteComponent(width, height, x, y) {
     ctx = myGameArea.context;
     ctx.clearRect(x,y,width,height);
@@ -390,16 +414,18 @@ function drawPlayers(users) {
 }
 
 function sceltaPalo() {
-    var palo = document.getElementById("palo");
-    var palo_value;
-    for (var i = 0; i < palo.length; i++) {
-        if (palo[i].checked) {
-            palo_value = palo[i].value;
+    if (admin.localeCompare(username) == 0){
+        var palo = document.getElementById("palo");
+        var palo_value;
+        for (var i = 0; i < palo.length; i++) {
+            if (palo[i].checked) {
+                palo_value = palo[i].value;
+            }
         }
-    }
-    socket.emit('scelta palo', palo_value);
-    // console.log(palo_value);
-    drawPalo(palo_value);
+        socket.emit('scelta palo', palo_value);
+        drawPalo(palo_value);
+    } else window.alert("not admin");
+
 }
 
 function drawPalo (palo) {
@@ -407,7 +433,36 @@ function drawPalo (palo) {
 }
 
 function prossimaMano () {
-    console.log("prossima mano");
-    deleteComponent(120, 50, 400,0);
-    socket.emit('delete palo');
+    if (admin.localeCompare(username) == 0) {
+        console.log("prossima mano");
+        deleteComponent(160, 50, 400,0);
+        socket.emit('delete palo');
+    }
+}
+
+function bussa () {
+    window.alert("hai bussato");
+    socket.emit('bussa');
+}
+
+function drawCards () {
+    cardComponent();
+}
+
+function Card(id,path) {
+    this.id = id;
+    this.path = path;
+}
+
+Card.prototype.getId = function () {
+    return this.id;
+}
+
+Card.prototype.getPath = function () {
+    return this.path;
+}
+
+function Mazzo() {
+    this.totale = numeroCarte;
+
 }

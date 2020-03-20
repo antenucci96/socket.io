@@ -114,4 +114,8 @@ io.on('connection', (socket) => {
   socket.on('delete palo', () => {
     socket.broadcast.emit('palo eliminato');
   });
+
+  socket.on('bussa',() => {
+    socket.broadcast.emit('ho bussato', socket.username);
+  })
 });
