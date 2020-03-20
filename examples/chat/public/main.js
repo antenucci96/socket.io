@@ -1,5 +1,6 @@
 const admin = "pappa";
 const numeroCarte = 40;
+var mazzo = [];
 var users = [];
 var cardToShow = [];
 var username;
@@ -386,7 +387,7 @@ function component(width, height, color, x, y, username) {
 function cardComponent() {
     console.log("card componente");
     var img = new Image();
-    img.src = "1s.jpg";
+    img.src = "res/Napoletane/1.jpg";
     img.onload = function () {
         for (var i = 0; i<5; i++)
         ctx.drawImage(img,120 + (i*120),150,100,130);
@@ -454,6 +455,8 @@ function Card(id,path) {
     this.path = path;
 }
 
+
+
 Card.prototype.getId = function () {
     return this.id;
 }
@@ -461,8 +464,61 @@ Card.prototype.getId = function () {
 Card.prototype.getPath = function () {
     return this.path;
 }
-
-function Mazzo() {
-    this.totale = numeroCarte;
-
+//
+// function CardGroups(id,owners) {
+//     this.totale = numeroCarte;
+//     this.owners = owners;
+//     this.id = id;
+// }
+//
+// CardsGroup.prototype.toArray = function()
+// {
+//     var array = [];
+//     for (var i=0; i<this.length; i++) {
+//         if (this[i]) {array.push(this[i]);}
+//     }
+//     return array;
+// }
+//
+// CardsGroup.prototype.populate = function()
+// {
+//     while (this.length > 0)
+//     {
+//         this.pop();
+//     }
+//     for (var i=0; i<4; i++) {
+//         for (var j=1; j<11; j++) {
+//             this.push({"suit": i, "value": j, "id": j+10*i});
+//         }
+//     }
+// }
+//
+// CardsGroup.prototype.mix = function()
+// {
+//     for (var i=0; i<this.length; i++)
+//     {
+//         var j = Math.floor(Math.random()*this.length);
+//         var tmp = this[i];
+//         this[i] = this[j];
+//         this[j] = tmp;
+//     }
+//     if (this.type === "deck")
+//     {
+//         for (var i=0; i<this.length; i++)
+//         {
+//             this[i].id=i;
+//         }
+//     }
+// }
+//
+function initMazzo() {
+    var card = new Object();
+    for (var i=1; i<=40; i++){
+        var id = i;
+        var path = "res/Napoletane/" + i + ".jpg";
+        card = (id,path)
+        mazzo.push(card);
+    }
+    console.log(mazzo);
 }
+
