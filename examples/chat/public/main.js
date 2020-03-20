@@ -385,16 +385,21 @@ function component(width, height, color, x, y, username) {
 }
 
 function cardComponent() {
-    console.log("card componente");
     var img = new Image();
-    img.src = "res/Napoletane/1.jpg";
-    img.onload = function () {
-        for (var i = 0; i<5; i++)
-        ctx.drawImage(img,120 + (i*120),150,100,130);
+    var n = 0;
+    for (i=0;i<5;i++){
+        ctx = myGameArea.context;
+        var img = new Image();
+        console.log(mazzo[i]);
+        img.src = mazzo[i];
+        img.onload = function () {
+            ctx.drawImage(this,100 + (n*120),150,100,130);
+            n++;
+        }
     }
-
-
 }
+
+
 
 function deleteComponent(width, height, x, y) {
     ctx = myGameArea.context;
@@ -418,6 +423,7 @@ function sceltaPalo() {
     if (admin.localeCompare(username) == 0){
         var palo = document.getElementById("palo");
         var palo_value;
+        initMazzo();
         for (var i = 0; i < palo.length; i++) {
             if (palo[i].checked) {
                 palo_value = palo[i].value;
@@ -516,7 +522,7 @@ function initMazzo() {
     for (var i=1; i<=40; i++){
         var id = i;
         var path = "res/Napoletane/" + i + ".jpg";
-        card = (id,path)
+        card = (id , path);
         mazzo.push(card);
     }
     console.log(mazzo);
