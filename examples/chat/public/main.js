@@ -424,6 +424,7 @@ function sceltaPalo() {
         var palo = document.getElementById("palo");
         var palo_value;
         initMazzo();
+        mix(mazzo);
         for (var i = 0; i < palo.length; i++) {
             if (palo[i].checked) {
                 palo_value = palo[i].value;
@@ -436,7 +437,7 @@ function sceltaPalo() {
 }
 
 function drawPalo (palo) {
-    paloElement = new component("30px","Consolas","red",400,35,palo);
+    paloElement = new component("30px","Consolas","red",320,35,palo);
 }
 
 function prossimaMano () {
@@ -526,5 +527,16 @@ function initMazzo() {
         mazzo.push(card);
     }
     console.log(mazzo);
+}
+
+function mix() {
+    var j, x, i;
+    for (i = mazzo.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = mazzo[i];
+        mazzo[i] = mazzo[j];
+        mazzo[j] = x;
+    }
+    return mazzo;
 }
 
