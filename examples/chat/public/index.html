@@ -32,23 +32,24 @@
                 canvas {
                     border:1px solid #d3d3d3;
                     background-color: #f1f1f1;
-                    position: absolute;
+                    position: fixed;
 
                 }
             </style>
         </div>
 
-        <button onclick="startGame()">Start</button> &nbsp;&nbsp;
+        <button onclick="startGame()" id="startButton" >Start</button> &nbsp;&nbsp;
 
-        <form  style="display: inline-block" id="palo" >
+        <form   style="display: inline-block" id="palo" >
             <input type="radio" id="coppe" name="palo" value="Coppe">Coppe<br>
             <input type="radio" id="spade" name="palo" value="Spade">Spade<br>
             <input type="radio" id="denari" name="palo" value="Denari">Denari<br>
             <input type="radio" id="bastoni" name="palo" value="Bastoni">Bastoni
-        </form> &nbsp;
-        <button onclick="sceltaPalo()">Dai carte</button>
-        <button onclick="prossimaMano()">Prossima mano</button> &nbsp;&nbsp;
-        <button onclick="bussa()">Bussa</button>
+        </form>
+           &nbsp;
+        <button onclick="sceltaPalo()" id="paloButton" >Dai carte</button>
+        <button onclick="prossimaMano()" id="prossimaMano" >Prossima mano</button> &nbsp;&nbsp;
+        <button onclick="bussa()" hidden>Bussa</button>
         <!--<button onclick="drawCards()">carte</button>-->
     </div>
 

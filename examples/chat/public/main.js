@@ -257,7 +257,7 @@ $(function () {
 
         console.log("emit");
         addParticipantsMessage(data);
-
+        showbuttons();
     });
 
 
@@ -340,6 +340,12 @@ $(function () {
         }
     });
 
+    socket.on('carte elminate', () => {
+        cardToShow = [];
+        console.dir("cars to dshor" + cardToShow);
+        deleteCarte();
+    });
+
 });
 
 function startGame() {
@@ -400,7 +406,6 @@ function cardComponent(carteUtente) {
     for (i=0;i<5;i++){
         ctx = myGameArea.context;
         var img = new Image();
-        console.log(mazzo[i]);
         img.src = carteUtente[i];
         img.onload = function () {
             ctx.drawImage(this,100 + (n*120),150,100,130);
@@ -461,7 +466,9 @@ function prossimaMano () {
     if (admin.localeCompare(username) == 0) {
         console.log("prossima mano");
         deleteComponent(0, 0, 600,50);
+        deleteCarte();
         socket.emit('delete palo');
+        socket.emit('delete carte');
     } else window.alert("not admin");
 }
 
@@ -503,6 +510,26 @@ function cardToPlayer() {
         currentCard += j;
         console.dir(carte);
         return carte;
+}
 
+function deleteCarte() {
+    socket.emit()
+    deleteComponent(0,110,800,200);
+    mazzo = [];
+    console.log(mazzo);
+}
+
+function showbuttons() {
+    var start = document.getElementById("startButton");
+    var form = document.getElementById("palo");
+    var palo = document.getElementById("paloButton");
+    var nextMano = document.getElementById("prossimaMano");
+    if (username != admin) {
+        start.style.display = "none";
+        form.style.display = "none";
+        palo.style.display = "none";
+        nextMano.style.display = "none";
+
+    }
 }
 

@@ -130,6 +130,10 @@ io.on('connection', (socket) => {
     })
   })
 
+  socket.on('delete carte' , () => {
+    socket.broadcast.emit ('carte elminate');
+  });
+
 
 
 
