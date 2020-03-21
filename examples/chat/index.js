@@ -134,7 +134,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit ('carte elminate');
   });
 
-
-
-
+  socket.on('spinotti', (data) => {
+      socket.broadcast.emit ('numero spinotti',data);
+  })
 });

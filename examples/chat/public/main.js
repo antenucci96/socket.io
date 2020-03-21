@@ -2,6 +2,7 @@ const admin = "pappa";
 const numeroCarte = 40;
 var currentCard = 0;
 var mazzo = [];
+var nSpinotto = 1;
 var users = [];
 var cardToShow = [];
 var username;
@@ -346,6 +347,12 @@ $(function () {
         deleteCarte();
     });
 
+    socket.on('numero spinotti',(data) => {
+        console.log(data);
+        deleteComponent(0,250,250,50);
+        component("30px","Consolas","red", 10, 300,"spinotto n." + data);
+    })
+
 });
 
 function startGame() {
@@ -395,12 +402,12 @@ function component(width, height, color, x, y, username) {
 function cardComponent(carteUtente) {
     var img = new Image();
     var n = 0;
-    for (i=0;i<5;i++){
+    for (i=0;i<8;i++){
         ctx = myGameArea.context;
         var img = new Image();
         img.src = carteUtente[i];
         img.onload = function () {
-            ctx.drawImage(this,100 + (n*120),150,100,130);
+            ctx.drawImage(this,0 + (n*90),150,70,100);
             n++;
         }
     }
@@ -439,6 +446,8 @@ function sceltaPalo() {
         }
         socket.emit('scelta palo', palo_value);
         drawPalo(palo_value);
+        socket.emit('spinotti',nSpinotto);
+        component("30px","Consolas","red", 10, 300,"spinotto n." + nSpinotto);
         currentCard = 0;
         for (var i = 0; i < numPlayers; i++) {
             socket.emit('carte', {
@@ -496,7 +505,7 @@ function mix() {
 function cardToPlayer() {
     var carte = [];
     var  j;
-        for (j = 0; j < 5; j++) {
+        for (j = 0; j < 8; j++) {
             carte[j] = mazzo[currentCard + j];
         }
         currentCard += j;
@@ -515,13 +524,25 @@ function showbuttons() {
     var start = document.getElementById("startButton");
     var form = document.getElementById("palo");
     var palo = document.getElementById("paloButton");
+    var spinotto = document.getElementById("spinotto");
     var nextMano = document.getElementById("prossimaMano");
     if (username != admin) {
         start.style.display = "none";
         form.style.display = "none";
         palo.style.display = "none";
         nextMano.style.display = "none";
-
+        spinotto.style.display = "none";
     }
+
+
+
 }
+function spinotto() {
+    nSpinotto++;
+    socket.emit('spinotti',nSpinotto);
+    deleteComponent(0,250,250,50);
+    component("30px","Consolas","red", 10, 300,"spinotto n." + nSpinotto);
+}
+
+
 
