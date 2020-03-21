@@ -117,5 +117,20 @@ io.on('connection', (socket) => {
 
   socket.on('bussa',() => {
     socket.broadcast.emit('ho bussato', socket.username);
+  });
+
+  socket.on('carte',(data) => {
+    socket.broadcast.emit('carte date', {
+      username: data.username,
+      carte: data.carte
+    })
+    socket.emit('carte date', {
+      username: data.username,
+      carte: data.carte
+    })
   })
+
+
+
+
 });

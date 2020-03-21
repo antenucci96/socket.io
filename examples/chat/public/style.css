@@ -122,6 +122,16 @@ ul {
   width: 400px;
 }
 
+.spettatore {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+}
+
 .login.page .title {
   font-size: 200%;
 }

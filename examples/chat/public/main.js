@@ -1,5 +1,6 @@
 const admin = "pappa";
 const numeroCarte = 40;
+var currentCard = 0;
 var mazzo = [];
 var users = [];
 var cardToShow = [];
@@ -322,12 +323,21 @@ $(function () {
     });
 
     socket.on('palo eliminato' , () => {
-       deleteComponent(120, 50, 400,0);
+       deleteComponent(0, 0, 600,50);
     });
 
     socket.on('ho bussato', (data) => {
         console.log(data + "ha bussato");
         window.alert(data + " ha bussato");
+    });
+
+    socket.on('carte date', (data) =>{
+        if (username == data.username) {
+            cardToShow = data.carte;
+            console.dir(username);
+            console.dir(cardToShow);
+            cardComponent(cardToShow);
+        }
     });
 
 });
@@ -384,14 +394,14 @@ function component(width, height, color, x, y, username) {
     ctx.fillText(username, this.x, this.y);
 }
 
-function cardComponent() {
+function cardComponent(carteUtente) {
     var img = new Image();
     var n = 0;
     for (i=0;i<5;i++){
         ctx = myGameArea.context;
         var img = new Image();
         console.log(mazzo[i]);
-        img.src = mazzo[i];
+        img.src = carteUtente[i];
         img.onload = function () {
             ctx.drawImage(this,100 + (n*120),150,100,130);
             n++;
@@ -401,7 +411,7 @@ function cardComponent() {
 
 
 
-function deleteComponent(width, height, x, y) {
+function deleteComponent(x,y,width,height) {
     ctx = myGameArea.context;
     ctx.clearRect(x,y,width,height);
 }
@@ -432,6 +442,13 @@ function sceltaPalo() {
         }
         socket.emit('scelta palo', palo_value);
         drawPalo(palo_value);
+        currentCard = 0;
+        for (var i = 0; i < numPlayers; i++) {
+            socket.emit('carte', {
+                username: users[i],
+                carte: cardToPlayer()
+            })
+        }
     } else window.alert("not admin");
 
 }
@@ -443,9 +460,9 @@ function drawPalo (palo) {
 function prossimaMano () {
     if (admin.localeCompare(username) == 0) {
         console.log("prossima mano");
-        deleteComponent(160, 50, 400,0);
+        deleteComponent(0, 0, 600,50);
         socket.emit('delete palo');
-    }
+    } else window.alert("not admin");
 }
 
 function bussa () {
@@ -453,71 +470,8 @@ function bussa () {
     socket.emit('bussa');
 }
 
-function drawCards () {
-    cardComponent();
-}
-
-function Card(id,path) {
-    this.id = id;
-    this.path = path;
-}
 
 
-
-Card.prototype.getId = function () {
-    return this.id;
-}
-
-Card.prototype.getPath = function () {
-    return this.path;
-}
-//
-// function CardGroups(id,owners) {
-//     this.totale = numeroCarte;
-//     this.owners = owners;
-//     this.id = id;
-// }
-//
-// CardsGroup.prototype.toArray = function()
-// {
-//     var array = [];
-//     for (var i=0; i<this.length; i++) {
-//         if (this[i]) {array.push(this[i]);}
-//     }
-//     return array;
-// }
-//
-// CardsGroup.prototype.populate = function()
-// {
-//     while (this.length > 0)
-//     {
-//         this.pop();
-//     }
-//     for (var i=0; i<4; i++) {
-//         for (var j=1; j<11; j++) {
-//             this.push({"suit": i, "value": j, "id": j+10*i});
-//         }
-//     }
-// }
-//
-// CardsGroup.prototype.mix = function()
-// {
-//     for (var i=0; i<this.length; i++)
-//     {
-//         var j = Math.floor(Math.random()*this.length);
-//         var tmp = this[i];
-//         this[i] = this[j];
-//         this[j] = tmp;
-//     }
-//     if (this.type === "deck")
-//     {
-//         for (var i=0; i<this.length; i++)
-//         {
-//             this[i].id=i;
-//         }
-//     }
-// }
-//
 function initMazzo() {
     var card = new Object();
     for (var i=1; i<=40; i++){
@@ -538,5 +492,17 @@ function mix() {
         mazzo[j] = x;
     }
     return mazzo;
+}
+
+function cardToPlayer() {
+    var carte = [];
+    var  j;
+        for (j = 0; j < 5; j++) {
+            carte[j] = mazzo[currentCard + j];
+        }
+        currentCard += j;
+        console.dir(carte);
+        return carte;
+
 }
 
