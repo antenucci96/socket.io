@@ -3,12 +3,13 @@ const numeroCarte = 40;
 var currentCard = 0;
 var mazzo = [];
 var nSpinotto = 1;
+var nGiro = 1;
 var users = [];
 var cardToShow = [];
 var username;
 var usersFromSockets = [];
 var socket = io();
-const numPlayers = 2;
+const numPlayers = 6;
 var paloElement;
 var il_palo;
 $(function () {
@@ -255,9 +256,9 @@ $(function () {
         });
 
         socket.emit("get list users", username);
-
         console.log("emit");
         addParticipantsMessage(data);
+        console.log(users);
         showbuttons();
     });
 
@@ -350,7 +351,12 @@ $(function () {
     socket.on('numero spinotti',(data) => {
         console.log(data);
         deleteComponent(0,250,250,50);
-        component("30px","Consolas","red", 10, 300,"spinotto n." + data);
+        component("30px","Consolas","red", 10, 300,"Spinotto n." + data);
+    });
+
+    socket.on('numero giro',(data) => {
+        deleteComponent(0,305,250,50);
+        component("30px","Consolas","red", 10, 330,"Giro n." + data);
     })
 
 });
@@ -431,6 +437,8 @@ function drawPlayers(users) {
         user = new component("30px", "Consolas", "black", 20 + (n * 200), 100, users[j]);
         n++;
     }
+
+    socket.emit('giro', nGiro);
 }
 
 function sceltaPalo() {
@@ -447,7 +455,7 @@ function sceltaPalo() {
         socket.emit('scelta palo', palo_value);
         drawPalo(palo_value);
         socket.emit('spinotti',nSpinotto);
-        component("30px","Consolas","red", 10, 300,"spinotto n." + nSpinotto);
+        component("30px","Consolas","red", 10, 300,"Spinotto n." + nSpinotto);
         currentCard = 0;
         for (var i = 0; i < numPlayers; i++) {
             socket.emit('carte', {
@@ -482,7 +490,7 @@ function bussa () {
 
 function initMazzo() {
     var card = new Object();
-    for (var i=1; i<=40; i++){
+    for (var i=1; i<=35; i++){
         var id = i;
         var path = "res/Napoletane/" + i + ".jpg";
         card = (id , path);
@@ -505,7 +513,7 @@ function mix() {
 function cardToPlayer() {
     var carte = [];
     var  j;
-        for (j = 0; j < 8; j++) {
+        for (j = 0; j < 7; j++) {
             carte[j] = mazzo[currentCard + j];
         }
         currentCard += j;
@@ -514,9 +522,11 @@ function cardToPlayer() {
 }
 
 function deleteCarte() {
-    socket.emit()
+    socket.emit();
     deleteComponent(0,110,800,200);
     mazzo = [];
+    nSpinotto = 1;
+    nGiro = 1;
     console.log(mazzo);
 }
 
@@ -526,13 +536,21 @@ function showbuttons() {
     var palo = document.getElementById("paloButton");
     var spinotto = document.getElementById("spinotto");
     var nextMano = document.getElementById("prossimaMano");
+    var giro = document.getElementById("giro");
+
+
     if (username != admin) {
         start.style.display = "none";
         form.style.display = "none";
         palo.style.display = "none";
         nextMano.style.display = "none";
         spinotto.style.display = "none";
+        giro.style.display = 'none';
     }
+        console.log(users.length);
+
+    
+
 
 
 
@@ -541,7 +559,15 @@ function spinotto() {
     nSpinotto++;
     socket.emit('spinotti',nSpinotto);
     deleteComponent(0,250,250,50);
-    component("30px","Consolas","red", 10, 300,"spinotto n." + nSpinotto);
+    component("30px","Consolas","red", 10, 300,"Spinotto n." + nSpinotto);
+}
+
+function countGiro() {
+    nGiro++;
+    socket.emit("giro",nGiro);
+    deleteComponent(0,305,250,50);
+    component("30px","Consolas","red", 10, 330,"Giro n." + nGiro);
+
 }
 
 

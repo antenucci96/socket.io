@@ -136,5 +136,9 @@ io.on('connection', (socket) => {
 
   socket.on('spinotti', (data) => {
       socket.broadcast.emit ('numero spinotti',data);
+  });
+
+  socket.on('giro', (data) => {
+      socket.broadcast.emit('numero giro', data);
   })
 });
