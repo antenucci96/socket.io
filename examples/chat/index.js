@@ -8,6 +8,7 @@ var port = process.env.PORT || 3000;
 var users = [];
 var playerCards = [];
 var palo;
+const maxUsers = 2;
 
 
 server.listen(port, () => {
@@ -38,21 +39,23 @@ io.on('connection', (socket) => {
     if (addedUser) return;
 
     // we store the username in the socket session for this client
-    socket.username = username;
-    ++numUsers;
-    addedUser = true;
-    users.push(username);
-    console.log(users);
-    socket.emit('login', {
-      numUsers: numUsers,
-      listUsers: users
-    });
-    // echo globally (all clients) that a person has connected
-    socket.broadcast.emit('user joined', {
-      listUsers: users,
-      username: socket.username,
-      numUsers: numUsers
-    });
+      if (users.length < maxUsers) {
+          socket.username = username;
+          ++numUsers;
+          addedUser = true;
+          users.push(username);
+          console.log(users);
+          socket.emit('login', {
+              numUsers: numUsers,
+              listUsers: users
+          });
+          // echo globally (all clients) that a person has connected
+          socket.broadcast.emit('user joined', {
+              listUsers: users,
+              username: socket.username,
+              numUsers: numUsers
+          });
+      } else console.log("troppi utenti");
   });
 
   // when the client emits 'typing', we broadcast it to others
